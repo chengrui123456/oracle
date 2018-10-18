@@ -10,7 +10,8 @@ where d.department_id = e.department_id
 and d.department_name in ('IT'，'Sales')
 GROUP BY department_name;
 ```
-查询结果：![](https://www.github.com/chengrui123456/oracle/blob/master/picture1.png）
+查询结果：
+> ![](https://github.com/chengrui123456/oracle/blob/master/picture1.png）
 
 
 - 查询2：
