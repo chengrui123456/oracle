@@ -9,7 +9,7 @@ where d.department_id = e.department_id
 and d.department_name in ('IT'，'Sales')
 GROUP BY department_name;
 ```
-查询结果：
+查询结果：rl
 
 
 - 查询2：
