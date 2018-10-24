@@ -1,36 +1,55 @@
 # oracle
-# 实验一
-查询1：
+# 实验2：用户管理 - 掌握管理角色、权根、用户的能力，并在用户之间共享对象。
 
-```SQL
-SELECT d.department_name，count(e.job_id)as "部门总人数"，
-avg(e.salary)as "平均工资"
-from hr.departments d，hr.employees e
-where d.department_id = e.department_id
-and d.department_name in ('IT'，'Sales')
-GROUP BY department_name;
+- 第1步：以system登录到pdborcl，创建角色cr_se和用户cr，并授权和分配空间：
+
+```sql
+$ sqlplus system/123@pdborcl
+SQL> CREATE ROLE cr_se;
+Role created.
+SQL> GRANT connect,resource,CREATE VIEW TO cr_se;
+Grant succeeded.
+SQL> CREATE USER cr IDENTIFIED BY 123 DEFAULT TABLESPACE users TEMPORARY TABLESPACE temp;
+User created.
+SQL> ALTER USER cr QUOTA 50M ON users;
+User altered.
+SQL> GRANT cr_se TO cr;
+Grant succeeded.
+SQL> exit
 ```
-## 查询结果：
-> ![](https://github.com/chengrui123456/oracle/blob/master/picture1.png)
+- 第2步：新用户cr连接到pdborcl，创建表mytable和视图myview，插入数据，最后将myview的SELECT对象权限授予hr用户。
 
-
-
-- 查询2：
-```SQL
-SELECT d.department_name，count(e.job_id)as "部门总人数"，
-avg(e.salary)as "平均工资"
-FROM hr.departments d，hr.employees e
-WHERE d.department_id = e.department_id
-GROUP BY department_name
-HAVING d.department_name in ('IT'，'Sales');
+```sql
+$ sqlplus cr/123@pdborcl
+SQL> show user;
+USER is "CR"
+SQL> CREATE TABLE mytable (id number,name varchar(50));
+Table created.
+SQL> INSERT INTO mytable(id,name)VALUES(1,'zhang');
+1 row created.
+SQL> INSERT INTO mytable(id,name)VALUES (2,'wang');
+1 row created.
+SQL> CREATE VIEW myview AS SELECT name FROM mytable;
+View created.
+SQL> SELECT * FROM myview;
+NAME
+--------------------------------------------------
+zhang
+wang
+SQL> GRANT SELECT ON myview TO hr;
+Grant succeeded.
+SQL>exit
 ```
-## 查询结果：
 
-> ![](https://github.com/chengrui123456/oracle/blob/master/picture2.png)
+- 第3步：用户hr连接到pdborcl，查询cr授予它的视图myview
 
-# 结论：
-我认为查询2的SQL语句更好，因为Having是分组（group by）后的筛选条件，分组后的数据组内再筛选。
-
-# 优化指导：
-没有 ALL 关键字，包含 GROUP BY 子句的 SELECT 语句将不显示没有符合条件的行的组。
+```sql
+$ sqlplus hr/123@pdborcl
+SQL> SELECT * FROM cr.myview;
+NAME
+--------------------------------------------------
+zhang
+wang
+SQL> exit
+```
 
