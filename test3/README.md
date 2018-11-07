@@ -1,8 +1,14 @@
 
 # 实验三
 
+### 用户CR登录
+```sql
+$ ssh oracle@202.115.82.8
+$ sqlplus cr/123@pdborcl
+```
 
-### 创建orders
+
+### 创建orders表
 ```sql
   CREATE TABLE orders 
  (
@@ -71,7 +77,7 @@
  );
 ```
 
-### 创建 orders_datail
+### 创建 orders_datail表
 
 ```sql
  CREATE TABLE order_details
