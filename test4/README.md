@@ -92,7 +92,6 @@ begin
     v_name:='phone'|| (i mod 3 + 1);
     insert  into cr.ORDER_DETAILS(ID,ORDER_ID,PRODUCT_NAME,PRODUCT_NUM,PRODUCT_PRICE)
       values (SEQ_ORDER_DETAILS_ID.NEXTVAL,v_order_id,v_name,1,v);
-    --在触发器关闭的情况下，需要手工计算每个订单的应收金额：
     select sum(PRODUCT_NUM*PRODUCT_PRICE) into m from cr.ORDER_DETAILS where ORDER_ID=v_order_id;
     if m is null then
      m:=0;
@@ -106,7 +105,6 @@ end;
 ```
 #### 查询单条数据
 ```sql
---查询数据 id值从10012到20021
 select * from cr.ORDERS where  order_id=10012;
 select * from cr.ORDER_DETAILS where  order_id=10012;
 select * from cr.VIEW_ORDER_DETAILS where order_id=10012;
