@@ -1,10 +1,4 @@
 # 实验五
-## 用户提示
-```flow js
-  用户：xiaoqingyu
-  角色：xqy
-  密码：123
-```
 
 #### 创建包
 ```sql
@@ -40,7 +34,7 @@ create or replace PACKAGE BODY MyPack IS
     END;
 END MyPack;
 ```
-![包创建及设置函数过程结果](./包创建及设置函数,过程.png)
+![包](./包.png)
 #### 调用函数及过程
 ```sql
 select count(*) from orders;
@@ -58,7 +52,7 @@ BEGIN
   MYPACK.Get_Employees (  V_EMPLOYEE_ID => V_EMPLOYEE_ID) ;    
 END;
 ```
-![过程调用结果](./过程调用.png)
+![函数](./函数.png)
 
 
 #### 提高订单统计速度
